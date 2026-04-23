@@ -20,7 +20,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ── Custom CSS ────────────────────────────────────────────────────────────────
+# Custom CSS
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -34,115 +34,45 @@ html, body, [class*="css"] {
     background: #ffffff;
     color: #000000;
 }
-</style>
 
 /* Title block */
 .hero-title {
     font-family: 'DM Serif Display', serif;
     font-size: 3.2rem;
-    color: #e8edf2;
+    color: #111827;  /* FIX: was white → invisible on white background */
     line-height: 1.15;
     margin-bottom: 0.2rem;
 }
 .hero-sub {
     font-size: 1.05rem;
-    color: #7a9bbf;
-    letter-spacing: 0.04em;
-    margin-bottom: 2rem;
-}
-.badge {
-    display: inline-block;
-    background: rgba(56,189,248,0.12);
-    color: #38bdf8;
-    border: 1px solid rgba(56,189,248,0.3);
-    border-radius: 4px;
-    padding: 2px 10px;
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-}
-
-/* Result cards */
-.result-card {
-    border-radius: 14px;
-    padding: 1.8rem 2rem;
-    margin-bottom: 1.2rem;
-}
-.result-low {
-    background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(16,185,129,0.05));
-    border: 1px solid rgba(16,185,129,0.4);
-}
-.result-high {
-    background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(239,68,68,0.05));
-    border: 1px solid rgba(239,68,68,0.4);
-}
-.result-label {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2rem;
-    margin-bottom: 0.3rem;
-}
-.result-prob {
-    font-size: 1rem;
-    opacity: 0.75;
+    color: #6b7280;  /* softer gray */
 }
 
 /* Metric boxes */
 .metric-box {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
     border-radius: 10px;
     padding: 1rem 1.2rem;
     text-align: center;
 }
-.metric-val {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.8rem;
-    color: #38bdf8;
-}
-.metric-lbl {
-    font-size: 0.78rem;
-    color: #7a9bbf;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-}
 
-/* Sidebar */
+/* Sidebar (optional: make it white too) */
 [data-testid="stSidebar"] {
-    background: #0d1720 !important;
-    border-right: 1px solid rgba(255,255,255,0.06);
-}
-[data-testid="stSidebar"] label {
-    color: #a0b4c8 !important;
-    font-size: 0.85rem !important;
+    background: #f9fafb !important;
 }
 
 /* Section headers */
 .section-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.5rem;
-    color: #e8edf2;
-    margin-bottom: 0.2rem;
-}
-.section-rule {
-    border: none;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    margin: 0.5rem 0 1.5rem 0;
+    color: #111827;
 }
 
-/* Feedback pill buttons */
-div[data-testid="stHorizontalBlock"] button {
-    border-radius: 20px !important;
-}
-
-/* Progress bar override */
+/* Progress bar */
 .stProgress > div > div {
-    background: linear-gradient(90deg, #38bdf8, #818cf8) !important;
-    border-radius: 4px !important;
+    background: linear-gradient(90deg, #2563eb, #60a5fa) !important;
 }
 </style>
 """, unsafe_allow_html=True)
-
 
 # Train model once 
 @st.cache_resource(show_spinner="Training model on dataset…")
