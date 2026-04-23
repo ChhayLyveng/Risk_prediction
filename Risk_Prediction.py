@@ -106,7 +106,7 @@ def train(df: pd.DataFrame, lr: float = 0.1, iterations: int = 1000):
     return _theta, _mean_X_train, _std_X_train, cost_history, metrics
 
 
-# ── Prediction ────────────────────────────────────────────────────────────────
+# Prediction
 def predict(X: np.ndarray, theta=None, mean_X=None, std_X=None):
     """
     Predict illness risk for input array X of shape (n_samples, 5).
@@ -126,7 +126,6 @@ def predict(X: np.ndarray, theta=None, mean_X=None, std_X=None):
     labels = (h >= 0.5).astype(float)
     return labels, h
 
-
 def predict_single(age, sleep_duration, water_intake, stress, screentime):
     """
     Convenience wrapper: predict for one individual.
@@ -135,22 +134,3 @@ def predict_single(age, sleep_duration, water_intake, stress, screentime):
     X = np.array([[age, sleep_duration, water_intake, stress, screentime]])
     labels, probs = predict(X)
     return int(labels[0][0]), float(probs[0][0])
-
-
-# ── Data loading & cleaning ───────────────────────────────────────────────────
-def load_and_clean(filepath: str) -> pd.DataFrame:
-    """Load raw CSV, clean and return DataFrame ready for training."""
-    df = pd.read_csv(filepath)
-    if 'Timestamp' in df.columns:
-        df.drop(['Timestamp'], axis=1, inplace=True)
-    df['illness'] = df['illness'].map({'Yes': 1, 'No': 0})
-    df['sleep_duration'] = df['sleep_duration'].map(SLEEP_MAP)
-    df.dropna(inplace=True)
-
-    # IQR outlier removal
-    cols = ['sleep_duration', 'water_intake', 'screentime']
-    Q1 = df[cols].quantile(0.25)
-    Q3 = df[cols].quantile(0.75)
-    IQR = Q3 - Q1
-    mask = ~((df[cols] < (Q1 - 1.5 * IQR)) | (df[cols] > (Q3 + 1.5 * IQR))).any(axis=1)
-    return df[mask].reset_index(drop=True)
