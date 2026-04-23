@@ -134,3 +134,22 @@ def predict_single(age, sleep_duration, water_intake, stress, screentime):
     X = np.array([[age, sleep_duration, water_intake, stress, screentime]])
     labels, probs = predict(X)
     return int(labels[0][0]), float(probs[0][0])
+
+
+# ── Data loading & cleaning ───────────────────────────────────────────────────
+def load_and_clean(filepath: str) -> pd.DataFrame:
+    """Load raw CSV, clean and return DataFrame ready for training."""
+    df = pd.read_csv(filepath)
+    if 'Timestamp' in df.columns:
+        df.drop(['Timestamp'], axis=1, inplace=True)
+    df['illness'] = df['illness'].map({'Yes': 1, 'No': 0})
+    df['sleep_duration'] = df['sleep_duration'].map(SLEEP_MAP)
+    df.dropna(inplace=True)
+
+    # IQR outlier removal
+    cols = ['sleep_duration', 'water_intake', 'screentime']
+    Q1 = df[cols].quantile(0.25)
+    Q3 = df[cols].quantile(0.75)
+    IQR = Q3 - Q1
+    mask = ~((df[cols] < (Q1 - 1.5 * IQR)) | (df[cols] > (Q3 + 1.5 * IQR))).any(axis=1)
+    return df[mask].reset_index(drop=True)
